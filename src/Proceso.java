@@ -11,7 +11,7 @@ public class Proceso implements Comparable<Proceso>{
     private int tiempoPermanencia;
     private int prioridad;
     private int tiempoSalida;
-    private EstadoProceso proceso;
+    private EstadoProceso estado;
     
     
     static
@@ -24,7 +24,7 @@ public class Proceso implements Comparable<Proceso>{
         tiempoPermanencia = 0;
         prioridad = 0;
         tiempoSalida = 0;
-        proceso = EstadoProceso.INICIO;
+        estado = EstadoProceso.INICIO;
     }
     
     public Proceso()
@@ -38,10 +38,12 @@ public class Proceso implements Comparable<Proceso>{
 
     
     /*setters*/
-    public void setProceso(EstadoProceso proceso) {
-        this.proceso = proceso;
-    }
     
+    
+    public void setEstado(EstadoProceso estado) {
+        this.estado = estado;
+    }
+
     public void setTiempoLlegada(int tiempoLlegada) {
         this.tiempoLlegada = tiempoLlegada;
     }
@@ -60,10 +62,12 @@ public class Proceso implements Comparable<Proceso>{
     
     
     /*getters*/
-    public EstadoProceso getProceso() {
-        return proceso;
-    }
+    
   
+    public EstadoProceso getEstado() {
+        return estado;
+    }
+
     public int getTiempoLlegada() {
         return tiempoLlegada;
     }

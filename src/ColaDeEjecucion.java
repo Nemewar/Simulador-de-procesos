@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import java.util.Iterator;
+
 
 /**
  *
  * @author Frank Pizarro
  */
-public class ListaES<T extends Proceso> implements Iterable<T>{
+public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
     
     class Nodo<T extends Proceso>
     {
@@ -25,10 +21,26 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
     }
     
     Nodo<T> padre;
+    private static int contador;
+    private static Proceso ProcesoActual;
+    private ListaES listaProcesos;
     
-    public ListaES()
+    public ColaDeEjecucion(ListaES<Proceso> listaProcesos)
     {
         this.padre = null;
+        contador = 0;
+        ProcesoActual = null;
+        this.listaProcesos = listaProcesos;
+        pasarProcesos();
+    }
+    
+    private <T>void pasarProcesos()
+    {
+        while(this.tamaño()!=listaProcesos.tamaño())
+        {
+            ListaES.Nodo nodoLista = listaProcesos.padre;
+            
+        }
     }
     
     @Override
@@ -59,7 +71,11 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
         };
         
         return it;
+        
+        /*MiIterator<T> it2 = new MiIterator<T>();
+        return it;*/
     }
+    
     
     public Nodo<T> crearNodo(T elemento)
     {
@@ -82,23 +98,10 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
         return tamaño;
     }
     
-    public void insertarInicio(T elemento)
-    {
-        Nodo<T> nodo = crearNodo(elemento);
-        if(padre==null)
-        {
-            padre = nodo;
-        }
-        else
-        {
-            nodo.sgte = padre;
-            padre = nodo;
-        }
-    }
-    
     public void insertarFinal(T elemento)
     {
         Nodo<T> nodo = crearNodo(elemento);
+        nodo.elemento.setEstado(EstadoProceso.LISTO);
         if(padre==null)
         {
             padre = nodo;
@@ -116,45 +119,6 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
                 nodoAux = nodoAux.sgte;
             }
             nodoAux.sgte = nodo;
-            
-        }
-    }
-    
-    public void insertarPorPosicion(int pos,T elemento)
-    {
-        if(pos<=0 || pos>tamaño())
-        {
-            throw new IndexOutOfBoundsException("pos fuera de rango");
-        }
-        else
-        {
-            if(pos==1)
-            {
-                insertarInicio(elemento);
-            }
-            else
-            {
-                /*
-                posAux y nodoSiguiente, posAux indica la posicion de nodoSiguiente.
-                */
-                Nodo<T> nodo = crearNodo(elemento);
-                Nodo<T> nodoSiguiente = padre;
-                Nodo<T> nodoAnterior = null;
-                int posAux = 1;//1 porque nodoSiguiente está en el primer elemento(padre)
-                while(nodoSiguiente!=null)
-                {
-                    nodoAnterior = nodoSiguiente;
-                    nodoSiguiente = nodoSiguiente.sgte;
-                    posAux++;
-                    if(posAux==pos)
-                    {
-                        nodoAnterior.sgte = nodo;
-                        nodo.sgte = nodoSiguiente;
-                        break;
-                    }
-                }
-                
-            }
         }
     }
     
@@ -186,7 +150,7 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
         T elemento = null;
         if(pos<=0 || pos>tamaño())
         {
-            throw new IndexOutOfBoundsException("pos fuera de rango o lista vacia");
+            throw new IndexOutOfBoundsException("pos fuera de rango o cola vacia");
         }
         else
         {
@@ -216,14 +180,6 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
         return elemento;
     }
     
-    /*
-    public int[] devolverPosicionesDeElemento(T elemento)
-    {
-        
-    }
-    */
-    
-    /*elimina el elemento la primera vez q lo encuentra y termina el bucle*/
     public void eliminarElementoSinRepeticion(T elemento)
     {
         if(existeElemento(elemento))
@@ -250,67 +206,15 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
         }
         else
         {
-            System.out.println("elemento no existe o lista vacia");
+            System.out.println("elemento no existe o cola vacia");
         }
     }
     
-    /*elimina todas las ocurrencias el elemento en la lista*/
-    public void eliminarElementoConRepeticion(T elemento)
-    {
-        if(existeElemento(elemento))
-        {
-            while(existeElemento(elemento))
-            {
-                eliminarElementoSinRepeticion(elemento);
-            }
-        }
-        else
-        {
-            System.out.println("elemento no existe o lista vacia");
-        }
-    }
-    
-    
-    /*ordena usando la interfaz comparable*/
-    public void ordenar()
+    public void mostrarCola()
     {
         if(padre==null)
         {
-            System.out.println("no se puede ordernar...lista vacia");
-        }
-        else
-        {
-            Nodo<T> p = padre;
-            Nodo<T> q = padre;
-            while(p!=null)
-            {
-                while(q.sgte!=null)
-                {
-                    if(q.elemento.compareTo(q.sgte.elemento)>0)
-                    {
-                        T aux = q.elemento;
-                        q.elemento = q.sgte.elemento;
-                        q.sgte.elemento = aux;
-                    }
-                    q = q.sgte;
-                }
-                p = p.sgte;
-                q = padre;
-            }
-            System.out.println("lista ordenada ascendentemente por edad");
-        }
-    }
-    
-    public void borrarTodo()
-    {
-        padre = null;
-    }
-    
-    public void mostrarLista()
-    {
-        if(padre==null)
-        {
-            System.out.println("lista vacia");
+            System.out.println("cola vacia");
         }
         else
         {

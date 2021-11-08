@@ -13,6 +13,7 @@ public class Main {
         
         Scanner entrada = new Scanner(System.in);
         ListaES<Proceso> listaProcesos = new ListaES<Proceso>();
+        ColaDeEjecucion<Proceso> colaDeEjecucion = new ColaDeEjecucion<>(listaProcesos);
         int n,tiempoLlegada,tiempoPermanencia,prioridad;
         
         /*creacion de los procesos*/
