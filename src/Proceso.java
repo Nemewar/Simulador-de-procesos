@@ -3,7 +3,7 @@
  *
  * @author Frank Pizarro
  */
-public class Proceso {
+public class Proceso implements Comparable<Proceso>{
     
     private static int contadorProcesos;
     private final String PID;
@@ -11,6 +11,7 @@ public class Proceso {
     private int tiempoPermanencia;
     private int prioridad;
     private int tiempoSalida;
+    private EstadoProceso proceso;
     
     
     static
@@ -22,6 +23,8 @@ public class Proceso {
         tiempoLlegada = 0;
         tiempoPermanencia = 0;
         prioridad = 0;
+        tiempoSalida = 0;
+        proceso = EstadoProceso.INICIO;
     }
     
     public Proceso()
@@ -33,6 +36,12 @@ public class Proceso {
         this.PID = pid.toString();
     }
 
+    
+    /*setters*/
+    public void setProceso(EstadoProceso proceso) {
+        this.proceso = proceso;
+    }
+    
     public void setTiempoLlegada(int tiempoLlegada) {
         this.tiempoLlegada = tiempoLlegada;
     }
@@ -49,7 +58,12 @@ public class Proceso {
         this.tiempoSalida = tiempoSalida;
     }
     
-
+    
+    /*getters*/
+    public EstadoProceso getProceso() {
+        return proceso;
+    }
+  
     public int getTiempoLlegada() {
         return tiempoLlegada;
     }
@@ -76,6 +90,29 @@ public class Proceso {
     {
         return contadorProcesos;
     }
+    
+    
+    @Override
+    public int compareTo(Proceso p) {
+        
+        if(this.getTiempoLlegada()>p.getTiempoLlegada())
+        {
+            return 1;
+        }
+        else
+        {
+            if(this.getTiempoLlegada()==p.getTiempoLlegada())
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    }
+    
+    
     
     @Override
     public boolean equals(Object obj)
@@ -110,4 +147,8 @@ public class Proceso {
     {
         return "PID: "+this.PID;
     }
+
+    
+
+    
 }

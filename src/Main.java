@@ -4,7 +4,7 @@
  * @author Frank Pizarro
  */
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -38,6 +38,16 @@ public class Main {
         }
         
         
+        
+        /*ordenar por tiempo de llegada*/
+        listaProcesos.ordenar();
+        
+        for(Proceso p: listaProcesos)
+        {
+            System.out.println(p);
+        }
+        
+        listaProcesos.mostrarLista();
         
     }
 }

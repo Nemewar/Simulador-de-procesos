@@ -10,7 +10,7 @@ import java.util.Iterator;
  *
  * @author Frank Pizarro
  */
-public class ListaES<T> implements Iterable<T>{
+public class ListaES<T extends Comparable> implements Iterable<T>{
     
     class Nodo<T>
     {
@@ -289,6 +289,37 @@ public class ListaES<T> implements Iterable<T>{
         else
         {
             System.out.println("elemento no existe o lista vacia");
+        }
+    }
+    
+    
+    /*ordena usando la interfaz comparable*/
+    public void ordenar()
+    {
+        if(padre==null)
+        {
+            System.out.println("no se puede ordernar...lista vacia");
+        }
+        else
+        {
+            Nodo<T> p = padre;
+            Nodo<T> q = padre;
+            while(p!=null)
+            {
+                while(q.sgte!=null)
+                {
+                    if(q.elemento.compareTo(q.sgte.elemento)>0)
+                    {
+                        T aux = q.elemento;
+                        q.elemento = q.sgte.elemento;
+                        q.sgte.elemento = aux;
+                    }
+                    q = q.sgte;
+                }
+                p = p.sgte;
+                q = padre;
+            }
+            System.out.println("lista ordenada ascendentemente por edad");
         }
     }
     
