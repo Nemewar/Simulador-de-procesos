@@ -33,6 +33,23 @@ public class Proceso {
         this.PID = pid.toString();
     }
 
+    public void setTiempoLlegada(int tiempoLlegada) {
+        this.tiempoLlegada = tiempoLlegada;
+    }
+
+    public void setTiempoPermanencia(int tiempoPermanencia) {
+        this.tiempoPermanencia = tiempoPermanencia;
+    }
+
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
+    }
+
+    public void setTiempoSalida(int tiempoSalida) {
+        this.tiempoSalida = tiempoSalida;
+    }
+    
+
     public int getTiempoLlegada() {
         return tiempoLlegada;
     }
