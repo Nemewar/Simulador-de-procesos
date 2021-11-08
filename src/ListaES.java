@@ -297,7 +297,6 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
                 p = p.sgte;
                 q = padre;
             }
-            System.out.println("lista ordenada ascendentemente por edad");
         }
     }
     

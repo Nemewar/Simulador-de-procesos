@@ -21,27 +21,83 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
     }
     
     Nodo<T> padre;
-    private static int contador;
-    private static Proceso ProcesoActual;
+    private int contador;
+    private Proceso procesoActual;
     private ListaES listaProcesos;
     
     public ColaDeEjecucion(ListaES<Proceso> listaProcesos)
     {
         this.padre = null;
         contador = 0;
-        ProcesoActual = null;
+        procesoActual = null;
         this.listaProcesos = listaProcesos;
         pasarProcesos();
     }
     
-    private <T>void pasarProcesos()
+    private void pasarProcesos()
     {
+        int pos = 0;
+        ListaES.Nodo nodoLista = listaProcesos.padre;
+        insertarFinal((T)nodoLista.elemento);
+        pos++;
         while(this.tamaño()!=listaProcesos.tamaño())
         {
-            ListaES.Nodo nodoLista = listaProcesos.padre;
+            if(this.tamaño()==1)
+            {
+                procesoActual = padre.elemento;
+                while(nodoLista.sgte.elemento.getTiempoLlegada()>=contador)
+                {
+                    contador = contador + procesoActual.getPrioridad();
+                    if(contador>=nodoLista.sgte.elemento.getTiempoLlegada())
+                    {
+                        nodoLista = nodoLista.sgte;
+                        insertarFinal((T)nodoLista.elemento);
+                        pos++;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                procesoActual = devolverElementoPorPosicion(pos);
+                while(nodoLista.sgte.elemento.getTiempoLlegada()>=contador)
+                {
+                    contador = contador + procesoActual.getPrioridad();
+                    if(procesoActual.equals(devolverElementoPorPosicion(tamaño())))
+                    {
+                        pos=1;
+                    }
+                    else
+                    {
+                        pos++;
+                    }
+                    procesoActual = devolverElementoPorPosicion(pos);
+                    if(contador>=nodoLista.sgte.elemento.getTiempoLlegada())
+                    {
+                        nodoLista = nodoLista.sgte;
+                        insertarFinal((T)nodoLista.elemento);
+                    }
+                    if(tamaño()==listaProcesos.tamaño())
+                    {
+                        break;
+                    }
+                }
+            }
             
         }
     }
+    
+    
+    public Proceso getProcesoActual()
+    {
+        return this.procesoActual;
+    }
+    
+    public int getContador()
+    {
+        return this.contador;
+    }
+    
     
     @Override
     public Iterator<T> iterator()
@@ -75,6 +131,8 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
         /*MiIterator<T> it2 = new MiIterator<T>();
         return it;*/
     }
+    
+    
     
     
     public Nodo<T> crearNodo(T elemento)

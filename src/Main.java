@@ -13,7 +13,6 @@ public class Main {
         
         Scanner entrada = new Scanner(System.in);
         ListaES<Proceso> listaProcesos = new ListaES<Proceso>();
-        ColaDeEjecucion<Proceso> colaDeEjecucion = new ColaDeEjecucion<>(listaProcesos);
         int n,tiempoLlegada,tiempoPermanencia,prioridad;
         
         /*creacion de los procesos*/
@@ -29,13 +28,18 @@ public class Main {
         /*asignar valores a los atributos de los procesos*/
         for(int i=1;i<=Proceso.getContadorProcesos();i++)
         {
+            Proceso p = listaProcesos.devolverElementoPorPosicion(i);
             System.out.println("Proceso "+i+":");
             System.out.print("tiempoLlegada: ");
             tiempoLlegada = entrada.nextInt();
+            p.setTiempoLlegada(tiempoLlegada);
             System.out.print("tiempoPermanencia: ");
             tiempoPermanencia = entrada.nextInt();
+            p.setTiempoPermanencia(tiempoPermanencia);
             System.out.print("prioridad: ");
             prioridad = entrada.nextInt();
+            p.setPrioridad(prioridad);
+            System.out.println("");
         }
         
         
@@ -43,12 +47,13 @@ public class Main {
         /*ordenar por tiempo de llegada*/
         listaProcesos.ordenar();
         
-        for(Proceso p: listaProcesos)
-        {
-            System.out.println(p);
-        }
         
-        listaProcesos.mostrarLista();
+        
+        /**/
+        ColaDeEjecucion<Proceso> colaDeEjecucion = new ColaDeEjecucion<>(listaProcesos);
+        System.out.println("Contador: "+colaDeEjecucion.getContador());
+        System.out.println("Proceso actual: "+colaDeEjecucion.getProcesoActual());
+        colaDeEjecucion.mostrarCola();
         
     }
 }
