@@ -11,9 +11,15 @@ public class Main {
     
     public static void main(String[] args) {
         
+        /*SOLO FUNCIONA EL ALGORITMO PARA 
+        TIEMPOS DE LLEGADAS DIFERENTES ENTRE LOS PROCESOS*/
+        
+        
+        
+        
         Scanner entrada = new Scanner(System.in);
         ListaES<Proceso> listaProcesos = new ListaES<Proceso>();
-        int n,tiempoLlegada,tiempoPermanencia,prioridad;
+        int n,tiempoLlegada,duracion,prioridad;
         
         /*creacion de los procesos*/
         System.out.println("ingrese el numero de procesos:");
@@ -33,9 +39,9 @@ public class Main {
             System.out.print("tiempoLlegada: ");
             tiempoLlegada = entrada.nextInt();
             p.setTiempoLlegada(tiempoLlegada);
-            System.out.print("tiempoPermanencia: ");
-            tiempoPermanencia = entrada.nextInt();
-            p.setTiempoPermanencia(tiempoPermanencia);
+            System.out.print("duracion: ");
+            duracion = entrada.nextInt();
+            p.setDuracion(duracion);
             System.out.print("prioridad: ");
             prioridad = entrada.nextInt();
             p.setPrioridad(prioridad);
@@ -49,14 +55,16 @@ public class Main {
         
         
         
-        /**/
+        /*cola de ejecucion*/
         ColaDeEjecucion<Proceso> colaDeEjecucion = new ColaDeEjecucion<>(listaProcesos);
         
-        colaDeEjecucion.pasarProcesos();
-
-        colaDeEjecucion.ejecutarCola();
+        colaDeEjecucion.pasarProcesos();//pasar procesos de la lista a la cola
+        
+        colaDeEjecucion.ejecutarCola();//calcular los tiempos de salida
         
         
+        
+        /*mostrar la lista final con los tiempos de salida*/
         System.out.println("");
         System.out.println("Lista final");
         listaProcesos.mostrarLista();
