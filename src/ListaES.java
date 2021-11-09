@@ -216,6 +216,30 @@ public class ListaES<T extends Proceso> implements Iterable<T>{
         return elemento;
     }
     
+    public T devolverElementoPorProcesoActual(T elemento)
+    {
+        T procesoActual = null;
+        if(elemento==null)
+        {
+            throw new IllegalArgumentException("Elemento pasado nulo");
+        }
+        else
+        {
+            Nodo<T> nodo = padre;
+            while(nodo!=null)
+            {
+                if(nodo.elemento.equals(elemento))
+                {
+                    procesoActual = nodo.elemento;
+                    break;
+                }
+                nodo = nodo.sgte;
+            }
+        }
+        
+        return procesoActual;
+    }
+    
     /*
     public int[] devolverPosicionesDeElemento(T elemento)
     {

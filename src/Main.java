@@ -51,9 +51,16 @@ public class Main {
         
         /**/
         ColaDeEjecucion<Proceso> colaDeEjecucion = new ColaDeEjecucion<>(listaProcesos);
-        System.out.println("Contador: "+colaDeEjecucion.getContador());
-        System.out.println("Proceso actual: "+colaDeEjecucion.getProcesoActual());
-        colaDeEjecucion.mostrarCola();
+        
+        colaDeEjecucion.pasarProcesos();
+
+        colaDeEjecucion.ejecutarCola();
+        
+        
+        System.out.println("");
+        System.out.println("Lista final");
+        listaProcesos.mostrarLista();
+        
         
     }
 }

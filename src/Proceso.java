@@ -9,6 +9,7 @@ public class Proceso implements Comparable<Proceso>{
     private final String PID;
     private int tiempoLlegada;
     private int tiempoPermanencia;
+    private int duracionActual;
     private int prioridad;
     private int tiempoSalida;
     private EstadoProceso estado;
@@ -22,6 +23,7 @@ public class Proceso implements Comparable<Proceso>{
     {
         tiempoLlegada = 0;
         tiempoPermanencia = 0;
+        duracionActual = 0;
         prioridad = 0;
         tiempoSalida = 0;
         estado = EstadoProceso.INICIO;
@@ -40,6 +42,10 @@ public class Proceso implements Comparable<Proceso>{
     /*setters*/
     
     
+    public void setDuracionActual(int duracionActual) {
+        this.duracionActual = duracionActual;
+    }
+
     public void setEstado(EstadoProceso estado) {
         this.estado = estado;
     }
@@ -64,6 +70,10 @@ public class Proceso implements Comparable<Proceso>{
     /*getters*/
     
   
+    public int getDuracionActual() {
+        return duracionActual;
+    }
+
     public EstadoProceso getEstado() {
         return estado;
     }
@@ -149,7 +159,9 @@ public class Proceso implements Comparable<Proceso>{
     
     public String toString()
     {
-        return "PID: "+this.PID;
+        return "PID: "+this.PID+
+                "\ntiempoSalida: "+tiempoSalida+
+                "\n";
     }
 
     

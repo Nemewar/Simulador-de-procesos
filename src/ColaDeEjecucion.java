@@ -24,19 +24,19 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
     private int contador;
     private Proceso procesoActual;
     private ListaES listaProcesos;
+    private int pos;//posicion del siguiente proceso a ejecutarse
     
     public ColaDeEjecucion(ListaES<Proceso> listaProcesos)
     {
         this.padre = null;
         contador = 0;
+        pos = 0;
         procesoActual = null;
         this.listaProcesos = listaProcesos;
-        pasarProcesos();
     }
     
-    private void pasarProcesos()
+    public void pasarProcesos()
     {
-        int pos = 0;
         ListaES.Nodo nodoLista = listaProcesos.padre;
         insertarFinal((T)nodoLista.elemento);
         pos++;
@@ -48,6 +48,9 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
                 while(nodoLista.sgte.elemento.getTiempoLlegada()>=contador)
                 {
                     contador = contador + procesoActual.getPrioridad();
+                    procesoActual.setDuracionActual
+                    (procesoActual.getDuracionActual()+procesoActual.getPrioridad());
+                    
                     if(contador>=nodoLista.sgte.elemento.getTiempoLlegada())
                     {
                         nodoLista = nodoLista.sgte;
@@ -63,6 +66,10 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
                 while(nodoLista.sgte.elemento.getTiempoLlegada()>=contador)
                 {
                     contador = contador + procesoActual.getPrioridad();
+                    procesoActual.setDuracionActual
+                    (procesoActual.getDuracionActual()+procesoActual.getPrioridad());
+                    
+                    
                     if(procesoActual.equals(devolverElementoPorPosicion(tamaño())))
                     {
                         pos=1;
@@ -72,17 +79,79 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
                         pos++;
                     }
                     procesoActual = devolverElementoPorPosicion(pos);
+                    
+                    
                     if(contador>=nodoLista.sgte.elemento.getTiempoLlegada())
                     {
                         nodoLista = nodoLista.sgte;
                         insertarFinal((T)nodoLista.elemento);
                     }
+                    
+                    
                     if(tamaño()==listaProcesos.tamaño())
                     {
                         break;
                     }
                 }
             }
+            
+        }
+    }
+    
+    public void ejecutarCola()
+    {
+        while(this.tamaño()!=0)
+        {
+            contador = contador + procesoActual.getPrioridad();
+            procesoActual.setDuracionActual
+                    (procesoActual.getDuracionActual()+procesoActual.getPrioridad());
+            
+            if(procesoActual.getTiempoPermanencia()==procesoActual.getDuracionActual())
+            {
+               
+                if(this.tamaño()==1)
+                {
+                    procesoActual.setTiempoSalida(contador);
+                    eliminarElementoSinRepeticion((T)procesoActual);
+                    listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(contador);
+                    pos = 0;
+                    procesoActual = null;
+                    break;
+                    
+                }
+                else
+                {
+                    eliminarElementoSinRepeticion((T)procesoActual);
+                    if(devolverPosicion((T)procesoActual)==tamaño())
+                    {
+                        pos = pos - 1;
+                        procesoActual.setTiempoSalida(contador);
+                        listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(contador);
+                        procesoActual = devolverElementoPorPosicion(pos);
+                        System.out.println(pos);
+                        System.out.println("tamaño"+this.tamaño());
+                    }
+                    else
+                    {
+                        procesoActual.setTiempoSalida(contador);
+                        listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(contador);
+                        procesoActual = devolverElementoPorPosicion(pos);
+                        System.out.println(pos);
+                        System.out.println("tamaño"+this.tamaño());
+                    }
+                    continue;
+                }
+            }
+            
+            if(procesoActual.equals(devolverElementoPorPosicion(tamaño())))
+            {
+                pos=1;
+            }
+            else
+            {
+                pos++;
+            }
+            procesoActual = devolverElementoPorPosicion(pos);
             
         }
     }
@@ -201,6 +270,38 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
             }
         }
         return resultado;
+    }
+    
+    public int devolverPosicion(T elemento)
+    {
+        int i = 0;
+        if(padre==null)
+        {
+            i=-1;
+        }
+        else
+        {
+            
+            if(existeElemento(elemento))
+            {
+                Nodo<T> aux = padre;
+                while(aux!=null && existeElemento(elemento))
+                {
+                    i++;
+                    if(aux.elemento.equals(elemento))
+                    {
+                        System.out.println("nodo "+(i)+": "+aux.elemento);
+                        break;
+                    }
+                    aux = aux.sgte;
+                }
+            }
+            else
+            {
+                i = -2;
+            }
+        }
+        return i;
     }
     
     public T devolverElementoPorPosicion(int pos)
