@@ -124,7 +124,6 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
             
             if(procesoActual.getDuracion()==procesoActual.getDuracionActual())
             {
-               
                 if(this.tamaño()==1)
                 {
                     procesoActual.setTiempoSalida(contador);
@@ -159,6 +158,7 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
                     continue;
                 }
             }
+            
             if(procesoActual.equals(devolverElementoPorPosicion(tamaño())))
             {
                 pos=1;
@@ -287,6 +287,10 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
         return resultado;
     }
     
+    /*
+    -1 si el padre es null
+    -2 si el el padre no es null pero el elemento no existe
+    */
     public int devolverPosicion(T elemento)
     {
         int i = 0;
