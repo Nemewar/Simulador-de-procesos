@@ -157,11 +157,15 @@ public class Proceso implements Comparable<Proceso>{
             
     }
     
+    
+    
     public String toString()
     {
         return "PID: "+this.PID+
-                "\ntiempoSalida: "+tiempoSalida;
+                "\ntiempoSalida: "+tiempoSalida+"\n";
     }
+
+
 
     
 

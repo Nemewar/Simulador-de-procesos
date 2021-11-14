@@ -21,7 +21,7 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
     }
     
     Nodo<T> padre;
-    private int contador;
+    private int tiempoDeEjecucion;
     private Proceso procesoActual;
     private ListaES listaProcesos;
     private int pos;//posicion del siguiente proceso a ejecutarse
@@ -29,7 +29,7 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
     public ColaDeEjecucion(ListaES<Proceso> listaProcesos)
     {
         this.padre = null;
-        contador = 0;
+        tiempoDeEjecucion = 0;
         pos = 0;
         procesoActual = null;
         this.listaProcesos = listaProcesos;
@@ -47,13 +47,13 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
             if(this.tamaño()==1)
             {
                 procesoActual = padre.elemento;
-                while(nodoLista.sgte.elemento.getTiempoLlegada()>=contador)
+                while(nodoLista.sgte.elemento.getTiempoLlegada()>=tiempoDeEjecucion)
                 {
-                    contador = contador + procesoActual.getPrioridad();
+                    tiempoDeEjecucion = tiempoDeEjecucion + procesoActual.getPrioridad();
                     procesoActual.setDuracionActual
                     (procesoActual.getDuracionActual()+procesoActual.getPrioridad());
                     
-                    if(contador>=nodoLista.sgte.elemento.getTiempoLlegada())
+                    if(tiempoDeEjecucion>=nodoLista.sgte.elemento.getTiempoLlegada())
                     {
                         nodoLista = nodoLista.sgte;
                         insertarFinal((T)nodoLista.elemento);
@@ -65,14 +65,14 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
             else
             {
                 procesoActual = devolverElementoPorPosicion(pos);
-                while(nodoLista.sgte.elemento.getTiempoLlegada()>=contador)
+                while(nodoLista.sgte.elemento.getTiempoLlegada()>=tiempoDeEjecucion)
                 {
-                    contador = contador + procesoActual.getPrioridad();
+                    tiempoDeEjecucion = tiempoDeEjecucion + procesoActual.getPrioridad();
                     procesoActual.setDuracionActual
                     (procesoActual.getDuracionActual()+procesoActual.getPrioridad());
                     
                     
-                    if(contador>=nodoLista.sgte.elemento.getTiempoLlegada())
+                    if(tiempoDeEjecucion>=nodoLista.sgte.elemento.getTiempoLlegada())
                     {
                         nodoLista = nodoLista.sgte;
                         insertarFinal((T)nodoLista.elemento);
@@ -110,13 +110,13 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
                     procesoActual.getDuracion())
             {
                 int diferencia = procesoActual.getDuracion()-procesoActual.getDuracionActual();
-                contador = contador+diferencia;
+                tiempoDeEjecucion = tiempoDeEjecucion+diferencia;
                 procesoActual.setDuracionActual
                     (procesoActual.getDuracionActual()+diferencia);
             }
             else
             {
-                contador = contador + procesoActual.getPrioridad();
+                tiempoDeEjecucion = tiempoDeEjecucion + procesoActual.getPrioridad();
                 procesoActual.setDuracionActual
                     (procesoActual.getDuracionActual()+procesoActual.getPrioridad());
             }
@@ -126,9 +126,9 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
             {
                 if(this.tamaño()==1)
                 {
-                    procesoActual.setTiempoSalida(contador);
+                    procesoActual.setTiempoSalida(tiempoDeEjecucion);
                     eliminarElementoSinRepeticion((T)procesoActual);
-                    listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(contador);
+                    listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(tiempoDeEjecucion);
                     pos = 0;
                     procesoActual = null;
                     break;
@@ -141,8 +141,8 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
                     {
                         eliminarElementoSinRepeticion((T)procesoActual);
                         pos = 1;
-                        procesoActual.setTiempoSalida(contador);
-                        listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(contador);
+                        procesoActual.setTiempoSalida(tiempoDeEjecucion);
+                        listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(tiempoDeEjecucion);
                         procesoActual = devolverElementoPorPosicion(pos);
                     }
                     
@@ -151,8 +151,8 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
                     else
                     {
                         eliminarElementoSinRepeticion((T)procesoActual);
-                        procesoActual.setTiempoSalida(contador);
-                        listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(contador);
+                        procesoActual.setTiempoSalida(tiempoDeEjecucion);
+                        listaProcesos.devolverElementoPorProcesoActual((T)procesoActual).setTiempoSalida(tiempoDeEjecucion);
                         procesoActual = devolverElementoPorPosicion(pos);
                     }
                     continue;
@@ -177,9 +177,9 @@ public class ColaDeEjecucion<T extends Proceso> implements Iterable<T>{
         return this.procesoActual;
     }
     
-    public int getContador()
+    public int getTiempoDeEjecucion()
     {
-        return this.contador;
+        return this.tiempoDeEjecucion;
     }
     
     
